@@ -228,6 +228,29 @@ playground = /<head(\s[^>]*)?>/i.test(playground)
   : `<!doctype html>\n<html lang="en">\n<head>\n${HEAD}</head>\n${playground}\n</html>\n`;
 if (!playground.includes(CSP_APP)) throw new Error("could not add the Content-Security-Policy to the playground");
 
+// The site's top bar, so people can get back from the app. The app's CSP blocks /style.css and
+// /favicon.svg, so the bar's styles and logo are inline; its colours are the app's own variables,
+// so it follows the app's light/dark setting. The app's body is a full-height flex column, so
+// the bar just takes its height from the panes.
+const mark = src("favicon.svg").match(/<symbol[^>]*>([\s\S]*?)<\/symbol>/)[1];
+const SITEBAR_CSS = `<style>
+body { margin: 0; }   /* the app's body is height: 100%; the default 8px margin made the page scroll */
+.sitebar { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 44px; padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); background: var(--bg); border-bottom: 1px solid var(--line); font-size: 14px; }
+.sitebar a { color: var(--muted); text-decoration: none; }
+.sitebar a:hover, .sitebar a[aria-current] { color: var(--ink); }
+.sitebar .sb-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
+.sitebar nav { display: flex; gap: 20px; }
+.sitebar a[aria-current] { font-weight: 600; }
+</style>
+`;
+const SITEBAR = `<div class="sitebar" role="banner">
+  <a class="sb-brand" href="/"><svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true">${mark}</svg>archspec</a>
+  <nav aria-label="Site"><a href="/">Overview</a><a href="/docs/">Docs</a><a href="/playground/" aria-current="page">Playground</a></nav>
+</div>
+`;
+if (!/<body(\s[^>]*)?>/i.test(playground)) throw new Error("could not find the playground's <body> to add the site bar");
+playground = playground.replace(/<\/head>/i, `${SITEBAR_CSS}</head>`).replace(/<body(\s[^>]*)?>/i, (b) => `${b}\n${SITEBAR}`);
+
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(join(OUT, "docs"), { recursive: true });
 mkdirSync(join(OUT, "playground"), { recursive: true });
