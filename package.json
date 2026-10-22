@@ -1,0 +1,13 @@
+{
+  "name": "archspec.io",
+  "private": true,
+  "description": "The archspec website: landing page, docs and the playground, built from an archspec checkout",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "npx --yes serve dist"
+  },
+  "devDependencies": {
+    "marked": "^12.0.2"
+  }
+}

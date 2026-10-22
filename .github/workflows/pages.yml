@@ -1,0 +1,66 @@
+name: pages
+
+# Builds archspec.io from this repository and the archspec repository, and publishes it to
+# GitHub Pages. Runs on every push to main, by hand from the Actions tab, and when archspec
+# sends a repository_dispatch event of type "archspec-updated" (so a release updates the site).
+#
+# One-time setup:
+#   - Settings → Pages → Source: GitHub Actions; Custom domain: archspec.io; Enforce HTTPS.
+#   - While nickvasilyev/archspec is private, add a secret ARCHSPEC_TOKEN: a fine-grained
+#     token with read-only "Contents" access to that repository. Once it is public, the
+#     secret can be deleted.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: archspec branch, tag or commit to build from
+        default: main
+  repository_dispatch:
+    types: [archspec-updated]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:          # never run two deployments at once; let a running one finish
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: nickvasilyev/archspec
+          ref: ${{ inputs.ref || github.event.client_payload.ref || 'main' }}
+          token: ${{ secrets.ARCHSPEC_TOKEN || github.token }}
+          path: archspec
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test archspec
+        working-directory: archspec
+        run: |
+          npm ci
+          npm test               # never publish a build that fails its tests
+      - run: npm ci
+      - run: node build.mjs archspec
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

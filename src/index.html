@@ -1,0 +1,237 @@
+<section class="hero">
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <p class="eyebrow">Architecture as a checkable spec</p>
+      <h1>Design diagrams that tell you when the design is wrong.</h1>
+      <p class="lede">Describe your system in one YAML file. archspec draws the architecture and sequence
+        diagrams, checks the design the way a compiler checks code, and writes the security tables,
+        API reference and implementation briefs. All of it in your browser.</p>
+      <p class="ctas">
+        <a class="btn" href="/playground/">Open the playground</a>
+        <a class="btn btn-ghost" href="/docs/">Read the guide</a>
+      </p>
+      <p class="fine">Free · No sign-up · Nothing you type leaves your browser</p>
+    </div>
+    <div class="pane pane-code hero-code">
+      <div class="pane-head"><span class="dot"></span>shop.spec.yaml</div>
+      <pre class="code"><code>{{business_snippet}}</code></pre>
+    </div>
+    <div class="pane pane-out hero-diagram">
+      <div class="pane-head">Architecture <span class="pane-note">drawn from the spec above</span></div>
+      <div class="diagram">{{business_diagram}}</div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap section">
+    <p class="eyebrow">See it work</p>
+    <h2>What changes when the design is a spec.</h2>
+
+    <div class="show">
+      <div class="show-copy">
+        <p class="num">01</p>
+        <h3>Start with the business, then drill down.</h3>
+        <p>Begin with people and systems, in words a business stakeholder recognises. Open a system to
+          see the services, queues and databases inside it; open a service to see its endpoints and
+          what it owns. Every level comes from the same file, so they never disagree.</p>
+        <ul class="ticks">
+          <li>One diagram per level, drawn for you</li>
+          <li>Lines roll up: one arrow between systems stands for every connection inside</li>
+          <li>Links with no design under them yet are flagged, so you see what is left to do</li>
+          <li>Go as deep as you need: stop at a business sketch, map the components, or specify every endpoint and payload</li>
+        </ul>
+      </div>
+      <div class="scene" data-scene="drill" aria-label="Animation: drilling down from systems to services">
+        <div class="scene-bar">
+          <ol class="crumbs" aria-label="Level">
+            <li data-i="0"><button type="button">online-shop</button></li>
+            <li data-i="1"><button type="button">Order Processing Engine</button></li>
+            <li data-i="2"><button type="button">Order Processing API</button></li>
+          </ol>
+          <button type="button" class="play" aria-label="Pause animation"></button>
+        </div>
+        <div class="stage">
+          <div class="layer on" data-i="0" data-open="order-processing-engine">{{drill1}}</div>
+          <div class="layer" data-i="1" data-open="order-processing-api">{{drill2}}</div>
+          <div class="layer" data-i="2">{{drill3}}</div>
+          <svg class="cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2l15 11-6.5 1.2L16 21l-2.8 1.3-3.4-6.8L4 20z"/></svg>
+          <span class="ripple" aria-hidden="true"></span>
+        </div>
+        <p class="caption" aria-live="polite">The business view: who uses which system.</p>
+      </div>
+    </div>
+
+    <div class="show">
+      <div class="show-copy">
+        <p class="num">02</p>
+        <h3>One file, every view your reviewers ask for.</h3>
+        <p>Architects get diagrams, security gets the ports-and-protocols matrix with data
+          sensitivity, developers get an API reference and DDL, and coding agents get a brief for the
+          one step they are building. All generated, all in sync.</p>
+        <ul class="ticks">
+          <li>Export SVG, PNG, Markdown, CSV, OpenAPI, Mermaid and LikeC4</li>
+          <li>Briefs carry exactly the payloads, mappings and tables a step needs</li>
+        </ul>
+      </div>
+      <div class="scene" data-scene="views" aria-label="Animation: the views generated from one spec">
+        <div class="scene-bar">
+          <div class="vtabs" role="tablist">{{view_tabs}}</div>
+          <button type="button" class="play" aria-label="Pause animation"></button>
+        </div>
+        <div class="views">{{view_panels}}</div>
+      </div>
+    </div>
+
+    <div class="show">
+      <div class="show-copy">
+        <p class="num">03</p>
+        <h3>Mistakes show up while you type, not in development.</h3>
+        <p>Someone takes a shortcut: the fulfillment worker reads the orders database directly. On a
+          whiteboard that is one more arrow. In archspec it is three errors, each pointing at the line
+          to fix, before a single line of code is written.</p>
+        <ul class="ticks">
+          <li>Ownership, encryption, auth, timeouts, dual writes, call cycles</li>
+          <li>Type-checked field mappings between payloads and tables</li>
+          <li>The same checks run in CI on every pull request</li>
+        </ul>
+      </div>
+      <div class="scene" data-scene="check" aria-label="Animation: a change to the spec and the errors the checker reports">
+        <div class="scene-bar">
+          <span class="file">online-shop.spec.yaml</span>
+          <button type="button" class="play" aria-label="Pause animation"></button>
+        </div>
+        <div class="check-grid">
+          <pre class="editor"><code>{{editor_lines}}</code></pre>
+          <div class="check-out">
+            <div class="state on" data-i="0">{{findings_before}}</div>
+            <div class="state" data-i="1">{{findings_after}}</div>
+          </div>
+        </div>
+        <p class="caption" aria-live="polite">A clean design: no errors.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap section split split-wide">
+    <div>
+      <p class="eyebrow">Why</p>
+      <h2>A picture can't be wrong. A spec can.</h2>
+      <p>Visio, draw.io and Mermaid draw pictures. You can't drill from the business view into a
+        service's contract, and the drawing won't notice that card numbers cross the internet
+        unencrypted, that two services write the same database, or that a timeout is shorter than
+        the calls behind it. Those mistakes turn up in code review, in testing or in production.</p>
+      <p>archspec treats the design as code. One file says who uses which systems, what runs inside
+        them, how they connect, what data moves and in which order. Because it is precise, it can be
+        checked, and every view is generated from it, so the diagrams never drift from the spec.</p>
+    </div>
+    <figure class="pair pair-stack" aria-label="A spec and the findings archspec reports for it">
+      <div class="pane pane-code">
+        <div class="pane-head"><span class="dot"></span>api.spec.yaml</div>
+        <pre class="code"><code>{{check_snippet}}</code></pre>
+      </div>
+      <div class="pane pane-out">
+        <div class="pane-head">Findings</div>
+        {{check_findings}}
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap section">
+    <p class="eyebrow">What you get from one file</p>
+    <h2>Every view your reviewers need, generated and kept in sync.</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>Checks like a static analyzer</h3>
+        <p>{{rule_count}} rules type-check field mappings and catch unencrypted personal data, dual
+          writes, missing timeouts, synchronous call cycles, unowned database access and untested
+          steps, each with the line to fix.</p>
+      </article>
+      <article class="card">
+        <h3>Diagrams you can edit</h3>
+        <p>Architecture and sequence diagrams drawn natively, with a legend. Add boxes, connections
+          and steps on the diagram: archspec writes them into the YAML and keeps your comments.</p>
+      </article>
+      <article class="card">
+        <h3>Business view first</h3>
+        <p>Start with people and systems joined by plain-language links. Open a system to design its
+          services, queues and databases; open a service to see its endpoints and payloads.</p>
+      </article>
+      <article class="card">
+        <h3>Security review built in</h3>
+        <p>A ports-and-protocols matrix with direction, encryption, auth and the sensitivity of the
+          data on every connection (PII, PCI, PHI), and a table of every trust-boundary crossing.</p>
+      </article>
+      <article class="card">
+        <h3>API reference and OpenAPI</h3>
+        <p>A Swagger-style reference for any box: endpoints, payloads, responses, errors, message
+          handlers and the calls it makes. Download OpenAPI 3.1 for each service.</p>
+      </article>
+      <article class="card">
+        <h3>Briefs for coding agents</h3>
+        <p>Slice the spec into the exact brief a developer or coding agent needs to build one step:
+          the payloads, mappings, tables and error handling, and nothing else.</p>
+      </article>
+      <article class="card">
+        <h3>Reviews live in the spec</h3>
+        <p>Mark a finding reviewed, or done with a comment. The review is written into the file, so
+          it is versioned and discussed in the same pull request as the design.</p>
+      </article>
+      <article class="card">
+        <h3>Exports</h3>
+        <p>SVG and PNG diagrams, Markdown and CSV security tables, Postgres DDL, Mermaid, LikeC4 and
+          a design doc. The spec itself is plain YAML you keep next to the code.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="wrap section split">
+  <div>
+    <p class="eyebrow">Private by design</p>
+    <h2>Your architecture never leaves your machine.</h2>
+    <p>The playground is a single page with the engine, the rule pack and the guide built in. After
+      it loads it makes no network requests at all, and a Content-Security-Policy that blocks every
+      outbound connection makes the browser hold it to that.</p>
+    <ul class="ticks">
+      <li>No account, no server, no analytics</li>
+      <li>Work is kept in your browser between visits</li>
+      <li>Open and save <code>.spec.yaml</code> files on your own computer</li>
+      <li>Keeps working offline once loaded</li>
+    </ul>
+  </div>
+  <div>
+    <p class="eyebrow">In your pipeline</p>
+    <h2>The same engine checks every pull request.</h2>
+    <p>Keep specs next to the code. The command line checks them in CI with text, JSON or SARIF
+      output, so findings appear as annotations on the pull request, and renders every diagram and
+      table for your docs.</p>
+    <pre class="terminal" aria-label="Command line output"><code>{{terminal}}</code></pre>
+    <p class="muted small">A VS Code extension with the same diagnostics, preview and visual editor is planned.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap section">
+    <p class="eyebrow">Who it's for</p>
+    <h2>One source of truth, read the way each person needs it.</h2>
+    <div class="roles">
+      <div><h3>Architects</h3><p>Design end to end, drill into contracts, and find the gaps before anything is built.</p></div>
+      <div><h3>Business stakeholders</h3><p>See who uses which system and what passes between them, without the technical detail.</p></div>
+      <div><h3>Developers</h3><p>Get an unambiguous contract for each step: payloads, mappings, tables and error handling.</p></div>
+      <div><h3>Security reviewers</h3><p>Every connection with port, protocol, encryption, auth, trust boundary and data sensitivity.</p></div>
+      <div><h3>Coding agents</h3><p>A spec that is code only: easy to parse, slice and validate, with a brief per step.</p></div>
+      <div><h3>Platform teams</h3><p>Own the shared catalogs: approved connection types, vendors, data labels and the rule pack.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap cta">
+  <h2>Try it on your own system.</h2>
+  <p class="lede">The playground opens with a complete example. Change it, break it, and watch the findings.</p>
+  <p class="ctas"><a class="btn" href="/playground/">Open the playground</a><a class="btn btn-ghost" href="/docs/#start-with-the-business-flow">Start with the business flow</a></p>
+</section>
