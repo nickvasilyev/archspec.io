@@ -24,54 +24,6 @@
   </div>
 </section>
 
-<section class="wrap section agents">
-  <p class="eyebrow">Spec-driven development</p>
-  <h2>Structured specs instead of walls of Markdown.</h2>
-  <p class="section-lede">Spec-driven workflows have agents write requirements, plans and task lists as
-    pages of prose. It reads well, but it is long, nothing checks it, and reviewers end up skimming.
-    In archspec the design is data, so it can be validated, diffed line by line, drawn as diagrams and
-    sliced into exactly what one agent needs.</p>
-
-  <div class="versus">
-    <figure class="vs-card vs-prose" aria-label="Illustration: a long prose spec">
-      <figcaption><strong>Prose spec</strong><span>Markdown, per feature</span></figcaption>
-      <div class="prose-lines" aria-hidden="true">
-        <i class="h"></i><i></i><i></i><i class="s"></i><i></i><i class="m"></i>
-        <i class="h"></i><i></i><i class="m"></i><i></i><i></i><i class="s"></i>
-        <i class="h"></i><i></i><i></i><i class="m"></i><i></i><i></i><i class="s"></i>
-        <i class="h"></i><i></i><i class="m"></i><i></i><i></i>
-      </div>
-      <p class="vs-note">…and the next page. Reviewed by reading; ambiguity is found in code review.</p>
-    </figure>
-    <figure class="vs-card vs-spec" aria-label="A flow step from an archspec spec">
-      <figcaption><strong>archspec</strong><span>online-shop.spec.yaml, step S6</span></figcaption>
-      <pre class="code"><code>{{agent_step}}</code></pre>
-      <p class="vs-chips"><span class="pill pill-ok">checked: 0 errors</span><span class="pill pill-info">drawn at 3 levels</span><span class="pill pill-info">brief: archspec task S6</span></p>
-    </figure>
-  </div>
-
-  <div class="tablewrap compare">
-    <table>
-      <thead><tr><th></th><th>Prose spec</th><th>archspec</th></tr></thead>
-      <tbody>
-        <tr><th scope="row">What reviewers read</th><td>Pages of text per feature</td><td>A YAML diff, the diagrams and the findings</td></tr>
-        <tr><th scope="row">Precision</th><td>"should", "usually", "a few seconds"</td><td>Types, fields, ports, auth and timeouts that {{rule_count}} rules check</td></tr>
-        <tr><th scope="row">What an agent gets</th><td>The whole document in its context</td><td>A brief for one step: its payloads, mappings, tables and errors</td></tr>
-        <tr><th scope="row">Feedback while drafting</th><td>Review comments, after the code exists</td><td>Findings with line numbers, as text, JSON or SARIF</td></tr>
-        <tr><th scope="row">Diagrams</th><td>Drawn separately, if at all</td><td>Generated from the spec, at every level</td></tr>
-        <tr><th scope="row">Staying current</th><td>Drifts from the code</td><td>Lives in the repo; CI checks it on every pull request</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <ol class="steps">
-    <li><h3>Draft</h3><p>You or your agent write the YAML. Start with the business flow and add detail only where it matters.</p></li>
-    <li><h3>Check and review</h3><p>The checker reports mistakes with line numbers. Reviewers read the diagrams and the diff, and record decisions in the spec.</p></li>
-    <li><h3>Build</h3><p>Hand each agent the brief for its step: what it receives, what it writes, what it sends and how it handles errors.</p></li>
-    <li><h3>Keep in sync</h3><p>The spec stays next to the code. CI checks it on every pull request, so the design and the build don't drift apart.</p></li>
-  </ol>
-</section>
-
 <section class="band">
   <div class="wrap section">
     <p class="eyebrow">See it work</p>
@@ -161,6 +113,54 @@
       </div>
     </div>
   </div>
+</section>
+
+<section class="wrap section agents">
+  <p class="eyebrow">Spec-driven development</p>
+  <h2>Structured specs instead of walls of Markdown.</h2>
+  <p class="section-lede">Spec-driven workflows have agents write requirements, plans and task lists as
+    pages of prose. It reads well, but it is long, nothing checks it, and reviewers end up skimming.
+    In archspec the design is data, so it can be validated, diffed line by line, drawn as diagrams and
+    sliced into exactly what one agent needs.</p>
+
+  <div class="versus">
+    <figure class="vs-card vs-prose" aria-label="Illustration: a long prose spec">
+      <figcaption><strong>Prose spec</strong><span>Markdown, per feature</span></figcaption>
+      <div class="prose-lines" aria-hidden="true">
+        <i class="h"></i><i></i><i></i><i class="s"></i><i></i><i class="m"></i>
+        <i class="h"></i><i></i><i class="m"></i><i></i><i></i><i class="s"></i>
+        <i class="h"></i><i></i><i></i><i class="m"></i><i></i><i></i><i class="s"></i>
+        <i class="h"></i><i></i><i class="m"></i><i></i><i></i>
+      </div>
+      <p class="vs-note">…and the next page. Reviewed by reading; ambiguity is found in code review.</p>
+    </figure>
+    <figure class="vs-card vs-spec" aria-label="A flow step from an archspec spec">
+      <figcaption><strong>archspec</strong><span>online-shop.spec.yaml, step S6</span></figcaption>
+      <pre class="code"><code>{{agent_step}}</code></pre>
+      <p class="vs-chips"><span class="pill pill-ok">checked: 0 errors</span><span class="pill pill-info">drawn at 3 levels</span><span class="pill pill-info">brief: archspec task S6</span></p>
+    </figure>
+  </div>
+
+  <div class="tablewrap compare">
+    <table>
+      <thead><tr><th></th><th>Prose spec</th><th>archspec</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">What reviewers read</th><td>Pages of text per feature</td><td>A YAML diff, the diagrams and the findings</td></tr>
+        <tr><th scope="row">Precision</th><td>"should", "usually", "a few seconds"</td><td>Types, fields, ports, auth and timeouts that {{rule_count}} rules check</td></tr>
+        <tr><th scope="row">What an agent gets</th><td>The whole document in its context</td><td>A brief for one step: its payloads, mappings, tables and errors</td></tr>
+        <tr><th scope="row">Feedback while drafting</th><td>Review comments, after the code exists</td><td>Findings with line numbers, as text, JSON or SARIF</td></tr>
+        <tr><th scope="row">Diagrams</th><td>Drawn separately, if at all</td><td>Generated from the spec, at every level</td></tr>
+        <tr><th scope="row">Staying current</th><td>Drifts from the code</td><td>Lives in the repo; CI checks it on every pull request</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ol class="steps">
+    <li><h3>Draft</h3><p>You or your agent write the YAML. Start with the business flow and add detail only where it matters.</p></li>
+    <li><h3>Check and review</h3><p>The checker reports mistakes with line numbers. Reviewers read the diagrams and the diff, and record decisions in the spec.</p></li>
+    <li><h3>Build</h3><p>Hand each agent the brief for its step: what it receives, what it writes, what it sends and how it handles errors.</p></li>
+    <li><h3>Keep in sync</h3><p>The spec stays next to the code. CI checks it on every pull request, so the design and the build don't drift apart.</p></li>
+  </ol>
 </section>
 
 <section>
