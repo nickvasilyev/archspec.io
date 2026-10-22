@@ -115,7 +115,7 @@
           const node = shown(cur).querySelector(`[data-node="${CSS.escape(cur.dataset.open)}"]`);
           const r = rectIn(node, stage), cx = r.x + r.w / 2, cy = r.y + r.h / 2;
           const start = pos || { x: W * .82, y: H * .9 };
-          await t.anim(cursor, [{ opacity: 0, transform: `translate(${start.x}px, ${start.y}px)` }, { opacity: 1, transform: `translate(${start.x}px, ${start.y}px)`, offset: .15 }, { opacity: 1, transform: `translate(${cx}px, ${cy}px)` }], { duration: 1100 });
+          await t.anim(cursor, [{ opacity: 0, transform: `translate(${start.x}px, ${start.y}px)` }, { opacity: 1, transform: `translate(${start.x}px, ${start.y}px)`, offset: .1 }, { opacity: 1, transform: `translate(${cx}px, ${cy}px)` }], { duration: 1600 });
           pos = { x: cx, y: cy };
           node.classList.add("hit");
           t.anim(ripple, [{ opacity: 1, transform: `translate(${cx}px, ${cy}px) scale(.3)` }, { opacity: 0, transform: `translate(${cx}px, ${cy}px) scale(1.5)` }], { duration: 550, easing: "ease-out" });
@@ -135,7 +135,8 @@
           await t.anim(next, [{ transform: `translate(${-W * .1}px, ${-H * .1}px) scale(1.2)`, opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 650 });
         }
       }
-      return { count: layers.length, render, animate, hold: (i) => [2600, 2600, 3200][i] };
+      // the cursor appears within a second of each level being shown, then takes its time to reach the box
+      return { count: layers.length, render, animate, hold: (i) => [600, 600, 3200][i] };
     },
 
     // 02: type a shortcut into the spec; the findings follow
