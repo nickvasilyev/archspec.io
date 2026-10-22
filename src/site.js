@@ -185,7 +185,9 @@
       const render = (i) => {
         tabs.forEach((b, k) => b.setAttribute("aria-selected", String(k === i)));
         panels.forEach((p, k) => p.classList.toggle("on", k === i));
-        tabs[i].scrollIntoView({ block: "nearest", inline: "nearest" });
+        // keep the tab visible in its strip; scrollIntoView would scroll the page too
+        const strip = tabs[i].parentElement, a = tabs[i].getBoundingClientRect(), b = strip.getBoundingClientRect();
+        if (a.left < b.left || a.right > b.right) strip.scrollTo({ left: strip.scrollLeft + a.left - b.left - 8, behavior: reduce ? "auto" : "smooth" });
       };
       return { count: tabs.length, render, animate: async (from, to) => render(to), hold: () => HOLD };
     },

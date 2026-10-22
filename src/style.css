@@ -141,7 +141,7 @@ pre.code code { font-size: inherit; }
 .play::before { content: ""; width: 10px; height: 12px; border-inline: 3px solid currentColor; box-sizing: border-box; }
 .play.paused::before { border: 0; width: 0; height: 0; border-left: 10px solid currentColor; border-block: 6px solid transparent; margin-left: 3px; }
 .play:hover { color: var(--ink); border-color: var(--accent); }
-.caption { margin: 0; padding: 10px 14px; border-top: 1px solid var(--line); font-size: .9rem; color: var(--muted); min-height: 2.9em; }
+.caption { margin: 0; padding: 10px 14px; border-top: 1px solid var(--line); font-size: .9rem; line-height: 1.5; color: var(--muted); min-height: calc(2 * 1.5em + 20px); }
 
 /* 01 drill down */
 .crumbs { display: flex; flex-wrap: wrap; align-items: center; list-style: none; margin: 0; padding: 0; font-size: .85rem; min-width: 0; }
@@ -164,16 +164,17 @@ pre.code code { font-size: inherit; }
 
 /* 02 checks while you type */
 .check-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 380px; }
-.editor { margin: 0; padding: 12px 0; background: var(--code-bg); border-right: 1px solid var(--line); font-size: .74rem; line-height: 1.6; overflow: hidden; }
+.editor { margin: 0; padding: 12px 0; min-height: calc(20 * 1.6em + 24px); background: var(--code-bg); border-right: 1px solid var(--line); font-size: .74rem; line-height: 1.6; overflow: hidden; }
 .editor .ln { display: block; white-space: pre; padding-right: 12px; }
 .editor .no { display: inline-block; width: 4.2ch; margin-right: 1.4ch; text-align: right; color: var(--muted); opacity: .7; user-select: none; }
 .editor .ins { display: none; background: var(--accent-soft); box-shadow: inset 3px 0 var(--accent); }
 .editor .ins.shown { display: block; }
 .editor .ins.typing .txt::after { content: ""; display: inline-block; width: 2px; height: 1.1em; margin-left: 1px; vertical-align: text-bottom; background: var(--accent); animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
-.check-out { position: relative; padding: 14px; }
-.check-out .state { display: none; }
-.check-out .state.on { display: block; animation: rise .35s ease both; }
+/* both states share one grid cell, so the panel keeps the taller one's height between steps */
+.check-out { display: grid; padding: 14px; align-content: start; }
+.check-out .state { grid-area: 1 / 1; visibility: hidden; }
+.check-out .state.on { visibility: visible; animation: rise .35s ease both; }
 .check-out .findings { margin-top: 12px; }
 .check-out .findings li { animation: rise .4s ease both; }
 .check-out .findings li:nth-child(2) { animation-delay: .12s; } .check-out .findings li:nth-child(3) { animation-delay: .24s; } .check-out .findings li:nth-child(4) { animation-delay: .36s; }
@@ -286,4 +287,5 @@ td code { white-space: nowrap; }
   .editor { border-right: 0; border-bottom: 1px solid var(--line); }
   .stage { aspect-ratio: 1.5 / 1; }
   .views { height: 360px; }
+  .caption { min-height: calc(3 * 1.5em + 20px); }
 }
