@@ -112,6 +112,15 @@ const shop = A.load(read("examples", "online-shop.spec.yaml"), "online-shop.spec
   ...opts, resolveImport: (p) => { try { return readFileSync(resolve(APP, "examples", p), "utf8"); } catch { return null; } },
 });
 
+// One flow step as written in the example, for the comparison with a prose spec.
+function stepYaml(id) {
+  const start = shopLines.indexOf(`  - id: ${id}`);
+  if (start < 0) throw new Error(`online-shop example has no step ${id}: update build.mjs`);
+  let end = start + 1;
+  while (end < shopLines.length && shopLines[end].trim() && !/^  - id: /.test(shopLines[end])) end++;
+  return shopLines.slice(start, end).map((l) => l.slice(2)).join("\n");
+}
+
 // Scene: a shortcut typed into the spec, and what the checker says about it.
 const shopText = read("examples", "online-shop.spec.yaml");
 const shopOpts = { ...opts, resolveImport: (p) => { try { return readFileSync(resolve(APP, "examples", p), "utf8"); } catch { return null; } } };
@@ -170,8 +179,8 @@ const shell = (vars) => page("layout.html", {
   ...vars,
 });
 const index = shell({
-  title: "archspec · architecture you can check",
-  description: "Describe a system in one YAML file. archspec draws the diagrams, checks the design like a static analyzer and writes the security tables, API reference and implementation briefs, in your browser.",
+  title: "archspec · design specs for people and coding agents",
+  description: "One compact YAML spec instead of the design doc and the architecture diagram. archspec checks the design like a static analyzer, draws the diagrams and gives each coding agent a precise brief, in your browser.",
   path: "/", nav_home: ' aria-current="page"', nav_docs: "",
   body: page("index.html", {
     business_snippet: esc(businessSnippet),
@@ -187,6 +196,7 @@ const index = shell({
     view_tabs: views.map(([t], i) => `<button type="button" role="tab" aria-selected="${i === 0}" data-i="${i}"><span class="bar"></span>${esc(t)}</button>`).join(""),
     view_panels: views.map(([t, html], i) => `<div class="view${i === 0 ? " on" : ""}" role="tabpanel" aria-label="${esc(t)}" data-i="${i}">${html}</div>`).join(""),
     rule_count: String(ruleCount),
+    agent_step: esc(stepYaml("S6")),
     terminal,
   }),
 });
