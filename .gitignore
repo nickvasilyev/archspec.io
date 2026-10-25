@@ -1,0 +1,4 @@
+node_modules/
+dist/
+archspec/
+.DS_Store
